@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getWalletValue, portfolio, updateWalletValue, crypto } from "../data";
 import { Card, Button, Modal, Slider, InputNumber } from "antd";
 
-export default function CoinItem({ coin }) {
+export default function CoinItem({ coin, setBalance }) {
   const [inputValue, setInputValue] = useState(0.01);
   const [disabled, setDisabled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +28,8 @@ export default function CoinItem({ coin }) {
       portfolio.splice(coinIndex, 1);
     }
 
-    updateWalletValue(+currentBalance + parseFloat(sellPrice));
+    const newBalance = updateWalletValue(+currentBalance + parseFloat(sellPrice));
+    setBalance(newBalance);
     setIsModalOpen(false);
   };
 

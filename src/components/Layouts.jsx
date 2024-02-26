@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, Button, theme, Typography } from "antd";
 const { Header, Sider, Content } = Layout;
+import WalletContext from "../App";
 
 import { wallet } from "../data";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ export default function Layouts() {
 
   const navigate = useNavigate()
 
+  const [balance, setBalance] = useState(10000);
 
   return (
     <Layout>
@@ -78,7 +80,7 @@ export default function Layouts() {
             }}
           />
 
-          <Typography.Title level={4}>{+wallet.toFixed(2)}$</Typography.Title>
+          <Typography.Title level={4}>{+balance.toFixed(2)}$</Typography.Title>
         </Header>
         <Content
           style={{
@@ -91,8 +93,8 @@ export default function Layouts() {
           }}
         >
           <Routes>
-            <Route path="/buy" element={<BuyCoin/>} ></Route>
-            <Route path="/portfolio" element={<Portfolio/>}></Route>
+            <Route path="/buy" element={<BuyCoin setBalance={setBalance} />} ></Route>
+            <Route path="/portfolio" element={<Portfolio setBalance={setBalance} />}></Route>
             <Route path="/" element={<Info/>}></Route>
           </Routes>
         </Content>

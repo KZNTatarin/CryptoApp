@@ -608,8 +608,9 @@ export const crypto = {
   
   export const updateWalletValue = (newValue) => {
     wallet = newValue;
+    return wallet;
   };
 
-export const portfolio = []
+export let portfolio = [];
 
 

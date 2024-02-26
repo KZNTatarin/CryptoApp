@@ -19,11 +19,10 @@ import {
 } from "../data";
 const coins = crypto.result;
 
-export default function BuyCoin() {
-
+export default function BuyCoin(props) {
   const [disabled, setDisabled] = useState(true);
   const [selectCoin, setSelectCoin] = useState();
-  const [amount, setAmount] = useState(0.01);
+  const [amount, setAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   //МОДАЛКА
@@ -36,10 +35,12 @@ export default function BuyCoin() {
     setIsModalOpen(false);
   };
 
- 
-
   //ВЫБОР МОНЕТЫ И КОЛИЧЕСТВО
   function handleSelect(value) {
+    console.log(amount);
+    const selectedCoin = coins.find((coin) => coin.id === value);
+    const price = selectedCoin ? selectedCoin.price : 0;
+    amount >= 0.01 && setTotalPrice(price * amount);
     setSelectCoin(value);
     setDisabled(false);
   }
@@ -63,18 +64,21 @@ export default function BuyCoin() {
         totalPrice: totalPrice,
       };
 
-      updateWalletValue(currentBalance - totalPrice);
-      portfolio.push(buyOjb);
+      const newBalance = updateWalletValue(currentBalance - totalPrice);
+      props.setBalance(newBalance);
+
+      if (portfolio.find((coin) => coin.id === buyOjb.id)) {
+
+        const index = portfolio.findIndex((coin) => coin.id === buyOjb.id);
+        portfolio[index].amount += buyOjb.amount
+        portfolio[index].totalPrice += buyOjb.totalPrice;
+      } else {
+        portfolio.push(buyOjb);
+      }
+
       message.success(`Coin(s) have been added to your portfolio `);
     } else setIsModalOpen(true);
   } 
-  
-
-  // useEffect(() => {
-  //   if (AddCoin) {
-  //     wallet;
-  //   }
-  // }, [AddCoin]);
 
   return (
     <>
@@ -134,6 +138,6 @@ export default function BuyCoin() {
           </Button>
         </Form.Item>
       </Form>
-    </>
+      </>
   );
 }

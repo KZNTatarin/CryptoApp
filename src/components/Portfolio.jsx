@@ -3,7 +3,7 @@ import CoinItem from "./CoinItem";
 import EmptyPotrfolio from "./EmptyPortfolio";
 import PortfolioChart from "./PortfolioChart";
 
-export default function Portfolio() {
+export default function Portfolio(props) {
   return (
     <>
       <div>
@@ -20,7 +20,7 @@ export default function Portfolio() {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         { portfolio.length === 0 ? <EmptyPotrfolio/> : portfolio.map((coin) => (
-          <CoinItem key={coin.id} coin={coin} />
+          <CoinItem key={coin.id} coin={coin} setBalance={props.setBalance} />
         )) }
        
       </div>
